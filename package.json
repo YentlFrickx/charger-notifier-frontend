@@ -1,0 +1,10 @@
+{
+  "name": "charger-notifier-frontend",
+  "version": "1.0.0",
+  "dependencies": {
+  },
+
+  "devDependencies": {
+    "tailwindcss": "^3.2.7"
+  }
+}
