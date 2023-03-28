@@ -82,7 +82,7 @@ function sendTokenToServer(currentToken) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                "topic": "yentl",
+                "topic": "yentl2",
                 "fcmRegistrationTokens": [currentToken]
             })
         })
@@ -131,6 +131,17 @@ function() {
     getToken(messaging, {vapidKey: 'BH7vtSjsDf8h9IQyROmPZb3x5HOzVt9oEEmOUqSMUbh19EPbpVYKkNDj_Jkrblsjw3ch7eetGk5lk86GGLk_YRM'}).then((currentToken) => {
         deleteToken(messaging, {vapidKey: 'BH7vtSjsDf8h9IQyROmPZb3x5HOzVt9oEEmOUqSMUbh19EPbpVYKkNDj_Jkrblsjw3ch7eetGk5lk86GGLk_YRM'}).then(() => {
             console.log('Token deleted.');
+            fetch('https://charger-api.yfrickx.be/api/notify/unSub', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "topic": "yentl2",
+                    "fcmRegistrationTokens": [currentToken]
+                })
+            })
             setTokenSentToServer(false);
             // Once token is deleted update UI.
             resetUI();
