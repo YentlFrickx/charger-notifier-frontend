@@ -16,15 +16,15 @@ importScripts('https://www.gstatic.com/firebasejs/8.1.1/firebase-messaging.js');
 
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
-messaging.onBackgroundMessage((payload) => {
-    console.log('[firebase-messaging-sw.js] Received background message ', payload);
+// messaging.onBackgroundMessage((payload) => {
+//     console.log('[firebase-messaging-sw.js] Received background message ', payload);
     // const notificationTitle = "title";
     // const notificationOptions = {
     //     body: "test",
     // };
     // return self.registration.showNotification(notificationTitle,
     //     notificationOptions);
-});
+// });
 self.addEventListener('notificationclick', event => {
     console.log(event)
 });
