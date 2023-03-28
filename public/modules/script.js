@@ -1,7 +1,7 @@
 // https://github.com/firebase/quickstart-js/blob/master/messaging/index.html
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-analytics.js";
-import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-messaging.js";
+import { getMessaging, getToken, onMessage, deleteToken } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-messaging.js";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -44,7 +44,7 @@ function resetUI() {
     showToken('loading...');
     // Get registration token. Initially this makes a network call, once retrieved
     // subsequent calls to getToken will return from cache.
-    getToken({vapidKey: 'BH7vtSjsDf8h9IQyROmPZb3x5HOzVt9oEEmOUqSMUbh19EPbpVYKkNDj_Jkrblsjw3ch7eetGk5lk86GGLk_YRM'}).then((currentToken) => {
+    getToken(messaging, {vapidKey: 'BH7vtSjsDf8h9IQyROmPZb3x5HOzVt9oEEmOUqSMUbh19EPbpVYKkNDj_Jkrblsjw3ch7eetGk5lk86GGLk_YRM'}).then((currentToken) => {
         if (currentToken) {
             sendTokenToServer(currentToken);
             updateUIForPushEnabled(currentToken);
@@ -75,7 +75,17 @@ function showToken(currentToken) {
 function sendTokenToServer(currentToken) {
     if (!isTokenSentToServer()) {
         console.log('Sending token to server...');
-        // TODO(developer): Send the current token to your server.
+        fetch('https://charger-api.yfrickx.be/api/notify/sub', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "topic": "yentl",
+                "fcmRegistrationTokens": [currentToken]
+            })
+        })
         setTokenSentToServer(true);
     } else {
         console.log('Token already sent to server so won\'t send it again ' +
@@ -115,10 +125,11 @@ function requestPermission() {
     });
 }
 
-function deleteToken() {
+document.getElementById("delete").addEventListener("click",
+function() {
     // Delete registration token.
-    messaging.getToken().then((currentToken) => {
-        messaging.deleteToken(currentToken).then(() => {
+    getToken(messaging, {vapidKey: 'BH7vtSjsDf8h9IQyROmPZb3x5HOzVt9oEEmOUqSMUbh19EPbpVYKkNDj_Jkrblsjw3ch7eetGk5lk86GGLk_YRM'}).then((currentToken) => {
+        deleteToken(messaging, {vapidKey: 'BH7vtSjsDf8h9IQyROmPZb3x5HOzVt9oEEmOUqSMUbh19EPbpVYKkNDj_Jkrblsjw3ch7eetGk5lk86GGLk_YRM'}).then(() => {
             console.log('Token deleted.');
             setTokenSentToServer(false);
             // Once token is deleted update UI.
@@ -130,7 +141,7 @@ function deleteToken() {
         console.log('Error retrieving registration token. ', err);
         showToken('Error retrieving registration token. ', err);
     });
-}
+})
 
 // Add a message to the messages element.
 function appendMessage(payload) {
