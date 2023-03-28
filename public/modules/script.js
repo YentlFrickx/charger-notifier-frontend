@@ -82,7 +82,7 @@ function sendTokenToServer(currentToken) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                "topic": "yentl2",
+                "topic": "78102",
                 "fcmRegistrationTokens": [currentToken]
             })
         })
@@ -138,7 +138,7 @@ function() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    "topic": "yentl2",
+                    "topic": "78102",
                     "fcmRegistrationTokens": [currentToken]
                 })
             })
