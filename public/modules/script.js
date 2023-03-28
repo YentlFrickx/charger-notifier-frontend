@@ -1,6 +1,7 @@
 // https://github.com/firebase/quickstart-js/blob/master/messaging/index.html
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-analytics.js";
+import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-messaging.js";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -18,11 +19,11 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-// const messaging = getMessaging(app);
+const firebase = initializeApp(firebaseConfig);
+// const analytics = getAnalytics(app);
+const messaging = getMessaging(firebase);
 // Retrieve Firebase Messaging object.
-const messaging = firebase.messaging();
+// const messaging = firebase.messaging();
 
 // IDs of divs that display registration token UI or request permission UI.
 const tokenDivId = 'token_div';
@@ -32,7 +33,7 @@ const permissionDivId = 'permission_div';
 // - a message is received while the app has focus
 // - the user clicks on an app notification created by a service worker
 //   `messaging.onBackgroundMessage` handler.
-messaging.onMessage((payload) => {
+onMessage((payload) => {
     console.log('Message received. ', payload);
     // Update the UI to include the received message.
     appendMessage(payload);
@@ -43,7 +44,7 @@ function resetUI() {
     showToken('loading...');
     // Get registration token. Initially this makes a network call, once retrieved
     // subsequent calls to getToken will return from cache.
-    messaging.getToken({vapidKey: 'BH7vtSjsDf8h9IQyROmPZb3x5HOzVt9oEEmOUqSMUbh19EPbpVYKkNDj_Jkrblsjw3ch7eetGk5lk86GGLk_YRM'}).then((currentToken) => {
+    getToken({vapidKey: 'BH7vtSjsDf8h9IQyROmPZb3x5HOzVt9oEEmOUqSMUbh19EPbpVYKkNDj_Jkrblsjw3ch7eetGk5lk86GGLk_YRM'}).then((currentToken) => {
         if (currentToken) {
             sendTokenToServer(currentToken);
             updateUIForPushEnabled(currentToken);
