@@ -131,7 +131,7 @@ function() {
     getToken(messaging, {vapidKey: 'BH7vtSjsDf8h9IQyROmPZb3x5HOzVt9oEEmOUqSMUbh19EPbpVYKkNDj_Jkrblsjw3ch7eetGk5lk86GGLk_YRM'}).then((currentToken) => {
         deleteToken(messaging, {vapidKey: 'BH7vtSjsDf8h9IQyROmPZb3x5HOzVt9oEEmOUqSMUbh19EPbpVYKkNDj_Jkrblsjw3ch7eetGk5lk86GGLk_YRM'}).then(() => {
             console.log('Token deleted.');
-            fetch('https://charger-api.yfrickx.be/api/notify/unSub', {
+            fetch('https://charger-api.yfrickx.be/api/notify/unsub', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
