@@ -5,12 +5,15 @@ var changetm = null;
 let markers = [];
 
 function initMap() {
-    var location = {lat: 50.6401661, lng: 4.6666977};
+    var location = {lat: 50.881722, lng: 4.684175};
     map = new google.maps.Map(document.getElementById('map-canvas'), {
-        zoom: 8,
+        zoom: 20,
         center: location,
         scrollwheel: true
     });
+
+    google.maps.event.addDomListener(window, 'load', updateMarkers);
+
 
     map.addListener("dragend", () => {
         event_handle()
@@ -27,9 +30,9 @@ function event_handle(){
     changetm = setTimeout("updateMarkers()", 1000);
 }
 
-
 function updateMarkers() {
     bounds = map.getBounds()
+
     fetch(`https://charger-api.yfrickx.be/api/map/markers`, {
         method: 'POST',
         headers: {
@@ -45,27 +48,24 @@ function updateMarkers() {
         })
     }).then(r => {
         r.json().then(data => {
+            removeMarkers()
             markers = []
             for (var i = 0; i < data.results.length; i++) {
                 result = data.results[i]
-                const pos = {lat: result.latitude, lng: result.longitude};
-                console.log(pos)
+
                 const marker = new google.maps.Marker({
-                    pos,
-                    map,
+                    map: map,
+                    position: new google.maps.LatLng( result.latitude, result.longitude),
                 });
 
                 markers.push(marker);
-                console.log("created marker")
             }
-            // setMapOnAll(map)
         })
     })
 }
 
-// Sets the map on all markers in the array.
-function setMapOnAll(map) {
+function removeMarkers() {
     for (let i = 0; i < markers.length; i++) {
-        markers[i].setMap(map);
+        markers[i].setMap(null);
     }
 }
