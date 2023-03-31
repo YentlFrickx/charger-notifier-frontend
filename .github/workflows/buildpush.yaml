@@ -13,7 +13,7 @@ jobs:
       - name: update tailwindcss
         uses: ZoeyVid/tailwindcss-update@main
         with:
-          input: src/input.css
+          input: src/style.css
           output: public/main.css
           params: "--minify"
       - uses: jakejarvis/s3-sync-action@master

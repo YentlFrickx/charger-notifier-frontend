@@ -6,7 +6,7 @@ RUN npm install
 
 COPY . .
 
-RUN npx tailwindcss -i ./src/input.css -o ./public/main.css
+RUN npx tailwindcss -i ./src/style.css -o ./public/main.css
 
 FROM nginx:alpine
 
