@@ -6,6 +6,10 @@
     "build": "webpack",
     "watch": "webpack --watch"
   },
+  "dependencies": {
+    "firebase": "9.18.0",
+    "load-google-maps-api": "^2.0.2"
+  },
   "devDependencies": {
     "css-loader": "^6.7.3",
     "html-loader": "^4.2.0",

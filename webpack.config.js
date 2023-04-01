@@ -4,11 +4,16 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
     mode: 'development',
-    entry: './src/index.js',
+    entry: {
+        home: './src/index.js',
+        chargers: './src/chargers/index.js',
+        // map: './src/chargersmap/map.js',
+        chargersMap: './src/chargersmap/index.js',
+        'firebase-messaging-sw': './src/firebase-messaging-sw.js'
+    },
     output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js',
-        assetModuleFilename: "[name][ext]",
+        filename: "[name].js",
+        path: path.resolve(__dirname, "dist"),
     },
     devServer: {
         static: {
@@ -43,6 +48,26 @@ module.exports = {
             inject: 'body',
             template: './src/index.html',
             filename: 'index.html',
+            chunks: [
+                "home"
+            ]
+        }),
+        new HtmlWebpackPlugin({
+            inject: 'body',
+            template: './src/chargers/index.html',
+            filename: 'chargers/index.html',
+            chunks: [
+                "chargers"
+            ]
+        }),
+        new HtmlWebpackPlugin({
+            inject: 'body',
+            template: './src/chargersmap/index.html',
+            filename: 'chargersmap/index.html',
+            scriptLoading: 'blocking',
+            chunks: [
+                "chargersMap"
+            ]
         })
 
     ]
