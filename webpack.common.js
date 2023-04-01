@@ -1,29 +1,19 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 
 module.exports = {
     mode: 'development',
     entry: {
         home: './src/index.js',
         chargers: './src/chargers/index.js',
-        // map: './src/chargersmap/map.js',
         chargersMap: './src/chargersmap/index.js',
         'firebase-messaging-sw': './src/firebase-messaging-sw.js'
     },
     output: {
         filename: "[name].js",
         path: path.resolve(__dirname, "dist"),
-    },
-    devServer: {
-        static: {
-            directory: path.resolve(__dirname, 'dist'),
-        },
-        port: 3000,
-        open: true,
-        hot: true,
-        compress: true,
-        historyApiFallback: true,
     },
     module: {
         rules: [
@@ -40,6 +30,13 @@ module.exports = {
                 test: /\.html$/i,
                 loader: "html-loader",
             },
+        ],
+    },
+    optimization: {
+        minimizer: [
+            // For webpack@5 you can use the `...` syntax to extend existing minimizers (i.e. `terser-webpack-plugin`), uncomment the next line
+            // `...`,
+            new CssMinimizerPlugin(),
         ],
     },
     plugins: [
