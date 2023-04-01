@@ -2,11 +2,13 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const HtmlWebpackPartialsPlugin = require('html-webpack-partials-plugin');
 
 module.exports = {
     mode: 'development',
     entry: {
         home: './src/index.js',
+        cookie: './src/cookie.js',
         chargers: './src/chargers/index.js',
         chargersMap: './src/chargersmap/index.js',
         'firebase-messaging-sw': './src/firebase-messaging-sw.js'
@@ -46,7 +48,8 @@ module.exports = {
             template: './src/index.html',
             filename: 'index.html',
             chunks: [
-                "home"
+                "home",
+                "cookie"
             ]
         }),
         new HtmlWebpackPlugin({
@@ -54,7 +57,8 @@ module.exports = {
             template: './src/chargers/index.html',
             filename: 'chargers/index.html',
             chunks: [
-                "chargers"
+                "chargers",
+                "cookie"
             ]
         }),
         new HtmlWebpackPlugin({
@@ -63,8 +67,13 @@ module.exports = {
             filename: 'chargersmap/index.html',
             scriptLoading: 'blocking',
             chunks: [
-                "chargersMap"
+                "chargersMap",
+                "cookie"
             ]
+        }),
+        new HtmlWebpackPartialsPlugin({
+            path: './src/partials/cookie.html',
+            template_filename: '*'
         })
 
     ]
