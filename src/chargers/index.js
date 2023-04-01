@@ -1,7 +1,9 @@
+import './index.html'
+
 // https://github.com/firebase/quickstart-js/blob/master/messaging/index.html
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-analytics.js";
-import { getMessaging, getToken, onMessage, deleteToken } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-messaging.js";
+import { initializeApp } from "firebase/app";
+// import { getAnalytics } from "firebase/analytics";
+import { getMessaging, getToken, onMessage, deleteToken } from "firebase/messaging";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -110,49 +112,48 @@ function showHideDiv(divId, show) {
     }
 }
 
-function requestPermission() {
-    console.log('Requesting permission...');
-    Notification.requestPermission().then((permission) => {
-        if (permission === 'granted') {
-            console.log('Notification permission granted.');
-            // TODO(developer): Retrieve a registration token for use with FCM.
-            // In many cases once an app has been granted notification permission,
-            // it should update its UI reflecting this.
-            resetUI();
-        } else {
-            console.log('Unable to get permission to notify.');
-        }
-    });
-}
+// function requestPermission() {
+//     console.log('Requesting permission...');
+//     Notification.requestPermission().then((permission) => {
+//         if (permission === 'granted') {
+//             console.log('Notification permission granted.');
+//             // TODO(developer): Retrieve a registration token for use with FCM.
+//             // In many cases once an app has been granted notification permission,
+//             // it should update its UI reflecting this.
+//             resetUI();
+//         } else {
+//             console.log('Unable to get permission to notify.');
+//         }
+//     });
+// }
 
 document.getElementById("delete").addEventListener("click",
-function() {
-    // Delete registration token.
-    getToken(messaging, {vapidKey: 'BH7vtSjsDf8h9IQyROmPZb3x5HOzVt9oEEmOUqSMUbh19EPbpVYKkNDj_Jkrblsjw3ch7eetGk5lk86GGLk_YRM'}).then((currentToken) => {
-        deleteToken(messaging, {vapidKey: 'BH7vtSjsDf8h9IQyROmPZb3x5HOzVt9oEEmOUqSMUbh19EPbpVYKkNDj_Jkrblsjw3ch7eetGk5lk86GGLk_YRM'}).then(() => {
-            console.log('Token deleted.');
-            fetch('https://charger-api.yfrickx.be/api/notify/unsub', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "topic": "78102",
-                    "fcmRegistrationTokens": [currentToken]
+    function() {
+        // Delete registration token.
+        getToken(messaging, {vapidKey: 'BH7vtSjsDf8h9IQyROmPZb3x5HOzVt9oEEmOUqSMUbh19EPbpVYKkNDj_Jkrblsjw3ch7eetGk5lk86GGLk_YRM'}).then((currentToken) => {
+            deleteToken(messaging, {vapidKey: 'BH7vtSjsDf8h9IQyROmPZb3x5HOzVt9oEEmOUqSMUbh19EPbpVYKkNDj_Jkrblsjw3ch7eetGk5lk86GGLk_YRM'}).then(() => {
+                fetch('https://charger-api.yfrickx.be/api/notify/unsub', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "topic": "78102",
+                        "fcmRegistrationTokens": [currentToken]
+                    })
                 })
-            })
-            setTokenSentToServer(false);
-            // Once token is deleted update UI.
-            resetUI();
+                setTokenSentToServer(false);
+                // Once token is deleted update UI.
+                resetUI();
+            }).catch((err) => {
+                console.log('Unable to delete token. ', err);
+            });
         }).catch((err) => {
-            console.log('Unable to delete token. ', err);
+            console.log('Error retrieving registration token. ', err);
+            showToken('Error retrieving registration token. ', err);
         });
-    }).catch((err) => {
-        console.log('Error retrieving registration token. ', err);
-        showToken('Error retrieving registration token. ', err);
-    });
-})
+    })
 
 // Add a message to the messages element.
 function appendMessage(payload) {
