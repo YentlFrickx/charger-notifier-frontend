@@ -1,5 +1,7 @@
 const loadGoogleMapsApi = require('load-google-maps-api');
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
+import '../cookie.js'
+
 
 class Map {
     map;
@@ -17,11 +19,20 @@ class Map {
     }
 
     createMap(googleMaps) {
-
+        const myStyles =[
+            {
+                featureType: "poi",
+                elementType: "labels",
+                stylers: [
+                    { visibility: "off" }
+                ]
+            }
+        ];
         const mapElement = document.getElementById('map-canvas');
         const map = new googleMaps.Map(mapElement, {
             center: { lat: 50.881722, lng: 4.684175 },
             zoom: 15,
+            styles: myStyles,
         });
 
         this.markerCluster = new MarkerClusterer({
@@ -46,7 +57,6 @@ class Map {
 
     updateMarkers() {
         const bounds = this.map.getBounds();
-
 
         fetch('https://charger-api.yfrickx.be/api/map/locations', {
             method: 'POST',
@@ -75,17 +85,6 @@ class Map {
         });
     }
 
-    //type Location struct {
-    // 	MobilityplusID int    `json:"id"`
-    // 	LocationName   string `json:"name"`
-    // 	Latitude       float64
-    // 	Longitude      float64
-    // 	Country        string
-    // 	Address        string
-    // 	Postcode       string
-    // 	Town           string
-    //}
-
     createMarker(result) {
         const marker = new google.maps.Marker({
             map: this.map,
@@ -95,7 +94,7 @@ class Map {
         const infoContent = `
         <div class="bg-white rounded-md shadow-md p-2">
             <h2 class="font-bold mb-2">${result.Address}</h2>
-            <p class="text-gray-600"><strong>Latitude:</strong>${result.Latitude}</p><p class="text-gray-600"><strong>Longitude:</strong>${result.Longitude}</p>
+            <button onclick="window.myFunction()">Click me</button>'
         </div>
         `;
 
@@ -128,6 +127,16 @@ class Map {
             this.updateMarkers();
         }, 1000);
     }
+
+    myFunction() {
+        console.log('Clicked!')
+    }
 }
+
+function myFunction() {
+    console.log('Clicked!')
+}
+
+window.myFunction = myFunction;
 
 export { Map };
