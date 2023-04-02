@@ -7,6 +7,7 @@
     "lint": "eslint src --ext .js"
   },
   "dependencies": {
+    "@googlemaps/markerclusterer": "^2.0.15",
     "firebase": "9.18.0",
     "load-google-maps-api": "^2.0.2"
   },
