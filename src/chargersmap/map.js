@@ -39,7 +39,25 @@ class Map {
 
         this.markerCluster = new MarkerClusterer({
             map: map,
-            markers: this.markers }
+            markers: this.markers,
+            onClusterClick: (e, cluster, map) => {
+                const clusterMarkers = cluster.markers;
+
+                var content = 'This cluster contains ' + clusterMarkers.length + ' markers.';
+
+                // create an infowindow and set its content
+                var infoWindow = new google.maps.InfoWindow({
+                    content: content,
+                    position: cluster.position,
+                    pixelOffset: new google.maps.Size(0, -30)
+                });
+
+                if (this.openInfoWindow) {
+                    this.openInfoWindow.close();
+                }
+                infoWindow.open(map);
+                this.openInfoWindow = infoWindow
+            }}
         );
 
         map.addListener('dragend', () => {
@@ -81,7 +99,6 @@ class Map {
                 for (let i = 0; i < data.length; i++) {
                     const result = data[i];
                     this.markerCluster.addMarker(this.createMarker(result))
-                    // this.markers.push(this.createMarker(result));
                 }
             });
         });
@@ -91,6 +108,8 @@ class Map {
         const marker = new google.maps.Marker({
             map: this.map,
             position: new google.maps.LatLng(result.Latitude, result.Longitude),
+            title: `${result.id}`,
+            label: result.Address
         });
 
         let buttons = `
@@ -137,6 +156,9 @@ class Map {
     eventHandle() {
         clearTimeout(this.changetm);
         this.changetm = setTimeout(() => {
+            if (this.openInfoWindow) {
+                this.openInfoWindow.close();
+            }
             this.updateMarkers();
         }, 1000);
     }
