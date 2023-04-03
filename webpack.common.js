@@ -9,7 +9,6 @@ module.exports = {
     entry: {
         home: './src/index.js',
         cookie: './src/cookie.js',
-        chargers: './src/chargers/index.js',
         chargersMap: './src/chargersmap/index.js',
         'firebase-messaging-sw': './src/firebase-messaging-sw.js'
     },
@@ -49,14 +48,6 @@ module.exports = {
             filename: 'index.html',
             chunks: [
                 "home"
-            ]
-        }),
-        new HtmlWebpackPlugin({
-            inject: 'body',
-            template: './src/chargers/index.html',
-            filename: 'chargers/index.html',
-            chunks: [
-                "chargers"
             ]
         }),
         new HtmlWebpackPlugin({
