@@ -1,6 +1,6 @@
 const loadGoogleMapsApi = require('load-google-maps-api');
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
-import '../cookie.js'
+import {isSubscribed, subscribeTopic, unsubscribeTopic} from "./notifications";
 
 
 class Map {
@@ -12,6 +12,8 @@ class Map {
 
     initMap() {
         this.loadGoogleMapsApi().then((googleMaps) => this.createMap(googleMaps));
+        window.unsubscribe = this.unsubscribe
+        window.subscribe = this.subscribe
     }
 
     loadGoogleMapsApi() {
@@ -91,11 +93,22 @@ class Map {
             position: new google.maps.LatLng(result.Latitude, result.Longitude),
         });
 
+        let buttons = `
+        <button class="infowindow-btn" id="subscribe" onclick="window.subscribe('${result.id}')">Subscribe</button>
+        <button class="infowindow-btn" hidden id="unsubscribe" onclick="window.unsubscribe('${result.id}')">Unsubscribe</button>
+        `
+        if (isSubscribed(result.id)) {
+            buttons = `
+            <button class="infowindow-btn" hidden id="subscribe" onclick="window.subscribe('${result.id}')">Subscribe</button>
+            <button class="infowindow-btn" id="unsubscribe" onclick="window.unsubscribe('${result.id}')">Unsubscribe</button>
+            `
+        }
+
         const infoContent = `
-        <div class="bg-white rounded-md shadow-md p-2">
+        <div class="text-lg rounded-md shadow-md p-2">
             <h2 class="font-bold mb-2">${result.Address}</h2>
-            <button onclick="window.myFunction()">Click me</button>'
-        </div>
+            ${buttons}
+                    </div>
         `;
 
         let infoWindow = new google.maps.InfoWindow({
@@ -128,15 +141,18 @@ class Map {
         }, 1000);
     }
 
-    myFunction() {
-        console.log('Clicked!')
+    subscribe(id) {
+        subscribeTopic(id);
+        document.querySelector('#subscribe').setAttribute('hidden', '')
+        document.querySelector('#unsubscribe').removeAttribute('hidden')
+    }
+
+    unsubscribe(id) {
+        unsubscribeTopic(id);
+        document.querySelector('#unsubscribe').setAttribute('hidden', '')
+        document.querySelector('#subscribe').removeAttribute('hidden')
+
     }
 }
-
-function myFunction() {
-    console.log('Clicked!')
-}
-
-window.myFunction = myFunction;
 
 export { Map };

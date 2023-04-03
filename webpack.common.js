@@ -48,8 +48,7 @@ module.exports = {
             template: './src/index.html',
             filename: 'index.html',
             chunks: [
-                "home",
-                "cookie"
+                "home"
             ]
         }),
         new HtmlWebpackPlugin({
@@ -57,8 +56,7 @@ module.exports = {
             template: './src/chargers/index.html',
             filename: 'chargers/index.html',
             chunks: [
-                "chargers",
-                "cookie"
+                "chargers"
             ]
         }),
         new HtmlWebpackPlugin({
@@ -67,13 +65,8 @@ module.exports = {
             filename: 'chargersmap/index.html',
             scriptLoading: 'blocking',
             chunks: [
-                "chargersMap",
-                "cookie"
+                "chargersMap"
             ]
-        }),
-        new HtmlWebpackPartialsPlugin({
-            path: './src/partials/cookie.html',
-            template_filename: '*'
         })
 
     ]
