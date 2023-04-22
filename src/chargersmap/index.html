@@ -3,11 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EV Charger notifications</title>
+    <title>Plugtracker</title>
 </head>
 <body>
-<div class="relative isolate px-6 pt-14 lg:px-8 h-screen">
-    <div id="map-canvas" class="canvas h-4/5"></div>
+<div class="bg-white">
+    <header class="inset-x-0 top-0">
+        <nav class="p-4">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+                <div class="flex items-center">
+                    <img src="../plugtracker.png" alt="PlugTracker Logo" class="h-8 w-8">
+                    <h1 class="ml-2 text-black font-bold text-lg">PlugTracker</h1>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="relative isolate h-screen">
+        <div id="map-canvas" class="canvas h-full"></div>
+    </div>
 </div>
 </body>
 

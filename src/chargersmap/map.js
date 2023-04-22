@@ -109,7 +109,6 @@ class Map {
             map: this.map,
             position: new google.maps.LatLng(result.Latitude, result.Longitude),
             title: `${result.id}`,
-            label: result.Address
         });
 
         let buttons = `
